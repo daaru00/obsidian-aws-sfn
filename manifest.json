@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-aws-sfn",
+	"name": "AWS Step Function",
+	"version": "0.1.0",
+	"minAppVersion": "0.11.9",
+	"description": "This plugin will visualize Step Function graph",
+	"author": "Fabio Gollinucci",
+	"authorUrl": "https://github.com/daaru00",
+	"isDesktopOnly": true
+}
