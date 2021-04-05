@@ -18,6 +18,7 @@
     ]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts", 
+    "src/external/sfn-0.1.5.js"  
   ]
 }

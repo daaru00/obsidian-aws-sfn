@@ -4,6 +4,7 @@ import { Plugin } from 'obsidian'
 import AwsCredentials, { AwsProfile } from './lib/aws'
 import AwsSfnPluginSettings, { DEFAULT_SETTINGS } from './settings'
 import AwsSfnSettingTab from './settings-tab'
+import { graphvizSync } from "@hpcc-js/wasm";
 
 export default class AwsSfnPlugin extends Plugin {
 	settings: AwsSfnPluginSettings;
@@ -20,6 +21,8 @@ export default class AwsSfnPlugin extends Plugin {
 		const profile = this.getConfiguredProfile()
 		this.statusBarItem = this.addStatusBarItem()
 		this.setStatusBarProfile(profile)
+
+		this.registerMarkdownCodeBlockProcessor('asl', this.blockProcessor.bind(this))
 	}
 
 	setStatusBarProfile(profile?: AwsProfile|undefined): void {
@@ -49,5 +52,18 @@ export default class AwsSfnPlugin extends Plugin {
 
 		const profile = this.getConfiguredProfile()
 		this.setStatusBarProfile(profile)
+	}
+
+	async blockProcessor(content: string, el: HTMLElement): Promise<void> {
+		const containerId = 'test' // (new Date()).getTime().toString()
+
+		const container = window.createDiv()
+		container.setAttribute("id", containerId)
+		container.addClass('aws-sfn')
+		el.replaceWith(container);
+
+		const graphviz = await graphvizSync()
+
+		container.innerHTML = graphviz.layout(content, "svg", "dot");
 	}
 }
