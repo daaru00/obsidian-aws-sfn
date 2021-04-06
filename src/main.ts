@@ -2,9 +2,15 @@ import { ButtonComponent, Plugin } from 'obsidian'
 import Graph from './lib/graph'
 
 export default class AwsSfnPlugin extends Plugin {
+	graphs: Graph[]
 
 	async onload(): Promise<void> {
 		this.registerMarkdownCodeBlockProcessor('asl', this.blockProcessor.bind(this))
+		this.registerMarkdownPostProcessor(this.postProcessor.bind(this))
+
+		this.app.workspace.on('resize', () => {
+			this.refreshAllGraphs()
+		})
 	}
 
 	async blockProcessor(content: string, el: HTMLElement): Promise<void> {
@@ -65,4 +71,15 @@ export default class AwsSfnPlugin extends Plugin {
 		return widget
 	}
 
+	postProcessor(): void {
+		this.refreshAllGraphs()
+	}
+
+	getAllGraphs(): NodeListOf<HTMLElement> {
+		return window.document.querySelectorAll('.aws-sfn-graph-container')
+	}
+
+	refreshAllGraphs(): void {
+		this.getAllGraphs().forEach(graph => graph.dispatchEvent(new Event('redraw')))
+	}
 }

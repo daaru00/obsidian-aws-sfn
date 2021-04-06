@@ -7,8 +7,9 @@ export default class Graph {
   graph: any;
 
   constructor(el: HTMLElement) {
-    this.el = el
     this.data = '{}'
+    this.el = el
+    this.el.addEventListener('redraw', this.renderStateMachine.bind(this))
   }
 
   setData(data: string): void {
