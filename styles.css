@@ -1,0 +1,126 @@
+.aws-sfn-graph-container {
+    text-align: center;
+    position: relative;
+    background-color: var(--background-secondary);
+}
+
+.aws-sfn-graph-container.in-error {
+    color: var(--text-error);
+    padding: 2em;
+}
+
+.aws-sfn-graph-container svg {
+    overflow: hidden;
+    margin: auto;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.aws-sfn-graph-container.loading svg {
+    opacity: 0;
+}
+
+.aws-sfn-graph-container .node>.shape {
+    stroke: #555;
+    stroke-width: .6px;
+    fill: transparent;
+}
+
+.aws-sfn-graph-container .node.state.Container>.shape,
+.aws-sfn-graph-container .node.state.NotYetStarted>.shape {
+    stroke-dasharray: 5 2
+}
+
+.aws-sfn-graph-container .node.state.Failed>.shape,
+.aws-sfn-graph-container rect.legend.Failed {
+    fill: var(--red)
+}
+
+.aws-sfn-graph-container .node.state.CaughtError>.shape,
+.aws-sfn-graph-container rect.legend.CaughtError {
+    fill: var(--orange)
+}
+
+.aws-sfn-graph-container .node.state.Succeeded>.shape,
+.aws-sfn-graph-container rect.legend.Succeeded {
+    fill: var(--green)
+}
+
+.aws-sfn-graph-container .node.state.InProgress>.shape,
+.aws-sfn-graph-container rect.legend.InProgress {
+    fill: var(--text-muted)
+}
+
+.aws-sfn-graph-container .node.state.Cancelled>.shape,
+.aws-sfn-graph-container rect.legend.Cancelled {
+    fill: var(--text-faint)
+}
+
+.aws-sfn-graph-container .node.anchor>.shape {
+    fill: transparent;
+    stroke: var(--text-normal);
+}
+
+.aws-sfn-graph-container .node.selected>.shape,
+.aws-sfn-graph-container .node.state.hovered:not(.selected):not(.NotYetStarted)>.shape {
+    stroke: #555;
+    stroke-width: 2px
+}
+
+.aws-sfn-graph-container .node.state.Container.Failed>.shape {
+    fill: var(--red)
+}
+
+.aws-sfn-graph-container .node.state.Container.CaughtError>.shape {
+    fill: var(--orange)
+}
+
+.aws-sfn-graph-container .node.state.Container.Succeeded>.shape {
+    fill: var(--green)
+}
+
+.aws-sfn-graph-container .node.state.Container.InProgress>.shape {
+    fill: var(--text-accent)
+}
+
+.aws-sfn-graph-container .node.state.Container.Cancelled>.shape {
+    fill: var(--text-muted)
+}
+
+.aws-sfn-graph-container marker {
+    fill: var(--text-muted)
+}
+
+.aws-sfn-graph-container path {
+    stroke: var(--text-muted);
+    background-color: var(--text-muted);
+    stroke-width: 1px
+}
+
+.aws-sfn-graph-container .node.anchor,
+.aws-sfn-graph-container .node.state.NotYetStarted {
+    cursor: default
+}
+
+.aws-sfn-graph-container .node.state {
+    cursor: pointer
+}
+
+.aws-sfn-graph-container tspan {
+    font-weight: 400;
+    font-size: 12px;
+    text-shadow: none;
+    fill: var(--text-normal);
+}
+
+.aws-sfn-graph-container .aws-sfn-widget {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.aws-sfn-graph-container .aws-sfn-widget button {
+    margin: 5px;
+    display: block;
+}
