@@ -11,6 +11,7 @@ export default class AwsSfnPlugin extends Plugin {
 		const container = window.createDiv()
 		container.addClass('aws-sfn-graph-container')
 		container.addClass('loading')
+		container.addClass('colorized')
 		
 		const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 		container.appendChild(svg)
@@ -20,7 +21,7 @@ export default class AwsSfnPlugin extends Plugin {
 		const graph = new Graph(container)
 		graph.setData(content)
 
-		try {	
+		try {
 			graph.renderStateMachine()
 
 			// do a dummy wait and redraw the graph
