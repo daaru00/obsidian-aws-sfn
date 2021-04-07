@@ -71,6 +71,7 @@
 }
 
 .aws-sfn-graph-container.colorized .node.anchor>.shape {
+    stroke: var(--text-accent);
     fill: var(--text-accent);
 }
 
