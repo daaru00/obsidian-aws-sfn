@@ -1,10 +1,16 @@
 import { ButtonComponent, Plugin } from 'obsidian'
 import Graph, {IsGraphVisible} from './lib/graph'
+import { DEFAULT_SETTINGS, PluginSettings } from './settings'
+import SettingTab from './settings-tab'
 
 export default class AwsSfnPlugin extends Plugin {
+	settings: PluginSettings
 	graphs: Graph[]
 
 	async onload(): Promise<void> {
+		await this.loadSettings();
+		this.addSettingTab(new SettingTab(this.app, this));
+
 		this.registerMarkdownCodeBlockProcessor('asl', this.blockProcessor.bind(this))
 		this.registerMarkdownPostProcessor(this.postProcessor.bind(this))
 
@@ -51,7 +57,10 @@ export default class AwsSfnPlugin extends Plugin {
 		const container = window.createDiv()
 		container.addClass('aws-sfn-graph-container')
 		container.addClass('loading')
-		container.addClass('colorized')
+
+		if (this.settings.colorizedVersion) {
+			container.addClass('colorized')
+		}
 		
 		const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 		container.appendChild(svg)
@@ -119,5 +128,21 @@ export default class AwsSfnPlugin extends Plugin {
 
 	refreshVisibleGraphs(): void {
 		this.getVisibleGraphs().forEach(graph => graph.dispatchEvent(new Event('redraw')))
+	}
+
+	async loadSettings(): Promise<void> {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings(): Promise<void> {
+		await this.saveData(this.settings);
+
+		if (this.settings.colorizedVersion) {
+			window.document.querySelectorAll('.aws-sfn-graph-container:not(.colorized)')
+				.forEach(graph => graph.addClass('colorized'))
+		} else {
+			window.document.querySelectorAll('.aws-sfn-graph-container.colorized')
+				.forEach(graph => graph.removeClass('colorized'))
+		}
 	}
 }
