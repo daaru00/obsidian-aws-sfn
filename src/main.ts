@@ -1,5 +1,5 @@
 import { ButtonComponent, Plugin } from 'obsidian'
-import Graph from './lib/graph'
+import Graph, {IsGraphVisible} from './lib/graph'
 
 export default class AwsSfnPlugin extends Plugin {
 	graphs: Graph[]
@@ -8,9 +8,43 @@ export default class AwsSfnPlugin extends Plugin {
 		this.registerMarkdownCodeBlockProcessor('asl', this.blockProcessor.bind(this))
 		this.registerMarkdownPostProcessor(this.postProcessor.bind(this))
 
-		this.app.workspace.on('resize', () => {
-			this.refreshAllGraphs()
-		})
+		this.registerEvent(
+			this.app.workspace.on('resize', () => {
+				this.refreshVisibleGraphs()
+			})
+		)
+
+		this.registerEvent(
+			this.app.workspace.on('layout-ready', () => {
+				const markdownPreview = document.getElementsByClassName('markdown-preview-view')[0] as HTMLElement;
+				if (!markdownPreview) {
+					return
+				}
+				
+				this.registerDomEvent(markdownPreview, 'scroll', () => {
+					const graphs = this.getAllGraphs()
+					for (const graph of graphs) {
+						if (IsGraphVisible(graph)) {
+							if (graph.classList.contains('.visible')) {
+								continue
+							}
+
+							graph.removeClass('.hidden')
+							graph.addClass('.visible')
+
+							this.onBlockAppear(graph)
+						} else {
+							if (graph.classList.contains('.hidden')) {
+								continue
+							}
+
+							graph.removeClass('.visible')
+							graph.addClass('.hidden')
+						}
+					}
+				})
+			})
+		)
 	}
 
 	async blockProcessor(content: string, el: HTMLElement): Promise<void> {
@@ -29,12 +63,7 @@ export default class AwsSfnPlugin extends Plugin {
 
 		try {
 			graph.renderStateMachine()
-
-			// do a dummy wait and redraw the graph
-			setTimeout(() => {
-				graph.renderStateMachine()
-				container.removeClass('loading')
-			}, 300)
+			container.removeClass('loading')
 		} catch (error) {
 			container.removeClass('loading')
 			container.addClass('in-error')
@@ -44,6 +73,11 @@ export default class AwsSfnPlugin extends Plugin {
 
 		const widget = this.createWidget(graph)
 		container.appendChild(widget)
+	}
+
+	onBlockAppear(el: HTMLElement): void {
+		el.dispatchEvent(new Event('redraw'))
+		//console.log('a wild block appeared!', el)
 	}
 
 	createWidget(graph: Graph): HTMLElement {
@@ -72,14 +106,18 @@ export default class AwsSfnPlugin extends Plugin {
 	}
 
 	postProcessor(): void {
-		this.refreshAllGraphs()
+		this.refreshVisibleGraphs()
 	}
 
-	getAllGraphs(): NodeListOf<HTMLElement> {
-		return window.document.querySelectorAll('.aws-sfn-graph-container')
+	getAllGraphs(): HTMLElement[] {
+		return Array.from(window.document.querySelectorAll('.aws-sfn-graph-container'))
 	}
 
-	refreshAllGraphs(): void {
-		this.getAllGraphs().forEach(graph => graph.dispatchEvent(new Event('redraw')))
+	getVisibleGraphs(): HTMLElement[] {
+		return this.getAllGraphs().filter(graph => IsGraphVisible(graph))
+	}
+
+	refreshVisibleGraphs(): void {
+		this.getVisibleGraphs().forEach(graph => graph.dispatchEvent(new Event('redraw')))
 	}
 }

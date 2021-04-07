@@ -82,6 +82,7 @@
     stroke: var(--green);
 }
 
+.aws-sfn-graph-container.colorized .node.state.Wait>.shape,
 .aws-sfn-graph-container.colorized .node.state.Pass>.shape {
     stroke: var(--text-normal);
 }
