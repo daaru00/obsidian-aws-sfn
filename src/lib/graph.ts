@@ -3,7 +3,7 @@ import sfn from './external/sfn-0.1.5'
 export function IsGraphVisible(el: HTMLElement): boolean {
   const scrollPositionTo = el.parentElement.scrollTop + el.parentElement.offsetHeight
     
-    const rect = el.getBoundingClientRect();
+    const rect = el.getBoundingClientRect()
     const graphPositionFrom = rect.y
     const graphPositionTo = rect.y + el.offsetHeight
 

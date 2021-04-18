@@ -5,14 +5,14 @@ export default class SettingTab extends PluginSettingTab {
 	plugin: AwsSfnPlugin;
 
 	constructor(app: App, plugin: AwsSfnPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
+		super(app, plugin)
+		this.plugin = plugin
 	}
 
 	display(): void {
-		const { containerEl } = this;
+		const { containerEl } = this
 
-		containerEl.empty();
+		containerEl.empty()
 
 		new Setting(containerEl)
 			.setName('Enable colorized version')

@@ -9,8 +9,8 @@ export default class AwsSfnPlugin extends Plugin {
 	scrollTimeout: number
 
 	async onload(): Promise<void> {
-		await this.loadSettings();
-		this.addSettingTab(new SettingTab(this.app, this));
+		await this.loadSettings()
+		this.addSettingTab(new SettingTab(this.app, this))
 
 		this.registerMarkdownCodeBlockProcessor('asl', this.blockProcessor.bind(this))
 		this.registerMarkdownPostProcessor(this.postProcessor.bind(this))
@@ -23,7 +23,7 @@ export default class AwsSfnPlugin extends Plugin {
 
 		this.registerEvent(
 			this.app.workspace.on('layout-ready', () => {
-				const markdownPreview = document.getElementsByClassName('markdown-preview-view')[0] as HTMLElement;
+				const markdownPreview = document.getElementsByClassName('markdown-preview-view')[0] as HTMLElement
 				if (!markdownPreview) {
 					return
 				}
@@ -45,7 +45,7 @@ export default class AwsSfnPlugin extends Plugin {
 			container.addClass('colorized')
 		}
 		
-		const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
 		container.appendChild(svg)
 
 		el.replaceWith(container)
@@ -111,11 +111,11 @@ export default class AwsSfnPlugin extends Plugin {
 	}
 
 	async loadSettings(): Promise<void> {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
 	}
 
 	async saveSettings(): Promise<void> {
-		await this.saveData(this.settings);
+		await this.saveData(this.settings)
 
 		if (this.settings.colorizedVersion) {
 			window.document.querySelectorAll('.aws-sfn-graph-container:not(.colorized)')
@@ -128,23 +128,23 @@ export default class AwsSfnPlugin extends Plugin {
 }
 
 function createWidget(graph: Graph): HTMLElement {
-	const widget = document.createElement("div");
+	const widget = document.createElement('div')
 	widget.addClass('aws-sfn-widget')
 
 	new ButtonComponent(widget)
-		.setButtonText("\u29BF")
+		.setButtonText('\u29BF')
 		.onClick(async () => {
 			graph.renderStateMachine()
 		})
 
 	new ButtonComponent(widget)
-		.setButtonText("\u002B")
+		.setButtonText('\u002B')
 		.onClick(async () => {
 			graph.zoomIn()
 		})
 		
 	new ButtonComponent(widget)
-		.setButtonText("\u2212")
+		.setButtonText('\u2212')
 		.onClick(async () => {
 			graph.zoomOut()
 		})
