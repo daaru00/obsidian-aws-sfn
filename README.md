@@ -2,15 +2,13 @@
 
 This [Obsidian.md](https://obsidian.md/) plugin will render [Amazon State Language](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-amazon-states-language.html) script into state machine graph.
 
-![simple state machine](./doc/imgs/example.png)
-
 ## Installation
 
 Download zip archive from [GitHub releases page](https://github.com/daaru00/obsidian-aws-sfn/releases) and extract it into `<vault>/.obsidian/plugins` directory.
 
 ## Usage
 
-Declare a code black with "asl" type:
+Add a code block with "asl" type:
 ````markdown
 ```asl
 {
@@ -25,6 +23,14 @@ Declare a code black with "asl" type:
 }
 ```
 ````
+
+Open the preview mode:
+
+![schema](./doc/gifs/asl-schema.gif)
+
+Hold `CTRL` when scrolling in order to control the zoom level:
+
+![zoom](./doc/gifs/asl-zoom.gif)
 
 ## Notes
 
