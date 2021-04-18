@@ -1,6 +1,6 @@
 {
   "name": "obsidian-aws-sfn",
-  "version": "0.6.0",
+  "version": "0.2.0",
   "description": "Obsidian Plugin for AWS Step Function visualization",
   "main": "main.js",
   "scripts": {
