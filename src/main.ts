@@ -1,4 +1,5 @@
 import { ButtonComponent, Plugin } from 'obsidian'
+import './lib/icons'
 import Graph, {IsGraphVisible} from './lib/graph'
 import { DEFAULT_SETTINGS, PluginSettings } from './settings'
 import SettingTab from './settings-tab'
@@ -132,21 +133,21 @@ function createWidget(graph: Graph): HTMLElement {
 	widget.addClass('aws-sfn-widget')
 
 	new ButtonComponent(widget)
-		.setButtonText('\u29BF')
-		.onClick(async () => {
-			graph.renderStateMachine()
-		})
-
-	new ButtonComponent(widget)
-		.setButtonText('\u002B')
+		.setIcon('aws-sfn-zoom-in')
 		.onClick(async () => {
 			graph.zoomIn()
 		})
 		
 	new ButtonComponent(widget)
-		.setButtonText('\u2212')
+		.setIcon('aws-sfn-zoom-out')
 		.onClick(async () => {
 			graph.zoomOut()
+		})
+
+	new ButtonComponent(widget)
+		.setIcon('aws-sfn-center')
+		.onClick(async () => {
+			graph.renderStateMachine()
 		})
 
 	return widget
